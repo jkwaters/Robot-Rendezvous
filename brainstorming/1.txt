@@ -1,0 +1,34 @@
+======================================================
+=			COMP 4001 Project - Fall 2017			 =
+=					Robot Rendezvous				 =
+======================================================
+
+
+scan array of robots
+if there is a robot:
+	move L or R, if new location = robot, merge robots
+
+EXAMPLES
+- Full line of 5 robots (denoted by 1's)
+- Apply random L,R (denoted by <,> respectively)
+-----------------------------
+robotCycle = (1,1,1,1,1)
+	flipCoin = (<,>,>,<,>)
+			   (merged,0,>,>,<,0)
+			   (merged,0,0,1,>,<,0)
+
+
+
+---------------------------------------
+		
+		(0,1,1,0)
+
+
+while (remainingRobots > 1) && rounds < 10000:
+	for i in xrange(0,cycle.size):
+		if cycle[i] == 1:
+			rand(move_left(), move right())
+			handle merging robots (remainingRobots--)
+
+
+
