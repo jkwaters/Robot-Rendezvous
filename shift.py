@@ -12,7 +12,6 @@ def inputNumber(message):
        break
 
 def shift(position, distance, n):
-    distance = random.choice([-1, 1]) * distance
     if (position + distance) <= 0: # (position + distance) result is negative and we 
         return (n + position + distance)
     if (position + distance) > n: # shift is greater than n (the number of nodes)
@@ -30,23 +29,29 @@ def shift(position, distance, n):
 
 
 iterations = 0
-n = 10 # inputNumber("How many nodes? ")
-numRobots = 5 # inputNumber("How many robots? ")
+n = 1000 # inputNumber("How many nodes? ")
+numRobots = 50 # inputNumber("How many robots? ")
 robots = set(random.sample(range(1, n+1), numRobots))
 print(robots)
 
 while len(robots) > 1:
     iterations += 1
-    robotsBefore = robots
+    lenBefore = len(robots)
+    robotsBefore = set(robots)
     robotsAfter = set()
+    moves = list()
 
     while len(robotsBefore) > 0:
-        robotsAfter.add(shift(robotsBefore.pop(),1,n))
+        move = random.randint(1,int(n/lenBefore)) * random.choice([-1, 1])
+        moves.append(move)
+        robotsAfter.add(shift(robotsBefore.pop(),move,n))
         robotsAfter.difference_update(robotsBefore)
-        print(robotsBefore, robotsAfter)
+        # print(robotsBefore, robotsAfter)
 
-    print(robotsAfter, ' : ', iterations)
-    
-    robots = robotsAfter
-    if iterations >= 50:
-        break
+    if len(robotsAfter) != lenBefore:
+         print(robots)
+         print(moves)
+         print(robotsAfter, ' : ', len(robotsAfter), ' : ', iterations)
+    robots = set(robotsAfter)
+
+# print(robots, ' : ', iterations)
