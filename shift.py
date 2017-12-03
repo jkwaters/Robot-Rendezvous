@@ -1,13 +1,13 @@
 import random
 
-def shift(x, k, n):
-    k = random.choice([-1, 1]) * k
-    if (x + k) <= 0: # (x + k) result is negative and we 
-        return (n + x + k)
-    if (x + k) > n: # shift is greater than n (the number of nodes)
-        return (n - x + k)
+def shift(position, distance, n):
+    distance = random.choice([-1, 1]) * distance
+    if (position + distance) <= 0: # (position + distance) result is negative and we 
+        return (n + position + distance)
+    if (position + distance) > n: # shift is greater than n (the number of nodes)
+        return (n - position + distance)
     else:
-        return (x + k)
+        return (position + distance)
 
 # test edge cases & basic sanity testing
 # print(shift(1, -1, 10))
@@ -15,14 +15,41 @@ def shift(x, k, n):
 # print(shift(1, 1, 10))
 # print(shift(10, -1, 10))
 
+def inputNumber(message):
+  while True:
+    try:
+       userInput = int(input(message))
+    except ValueError:
+       print("Not an integer! Try again.")
+       continue
+    else:
+       return userInput
+       break
 
 iterations = 0
-n = 13
-numRobots = 12
+n = 10 # inputNumber("How many nodes? ")
+numRobots = 3 # inputNumber("How many robots? ")
 robots = set(random.sample(range(1, n+1), numRobots))
 print(robots)
 
 while len(robots) > 1:
     iterations += 1
-    robots = set([shift(x,1,n) for x in robots])
-    print(robots, ' : ', iterations)
+    robotsBefore = robots
+    robotsAfter = set()
+
+    while len(robotsBefore) > 1 or not robots.issubset(robotsAfter):
+        robotsAfter.add(shift(robotsBefore.pop(),1,n))
+        robotsAfter.difference_update(robotsBefore)
+        print(robotsBefore, robotsAfter)
+
+    print(robotsAfter, ' : ', iterations)
+    
+    robots = robotsAfter
+    # robotsAftered = robotsAftered.difference(robotsAftered.intersection(robots)) # doesn't work with 3 numbers shifting, need to find a pair within +/- 1
+    if iterations >= 50:
+        break
+
+# robotsAfter = set()
+# while len(robots) > 1 and not robots.issubset(robotsAfter):
+#     robotsAfter.add(shift(robots.pop(),1,n))
+#     print(robots, robotsAfter)
