@@ -29,8 +29,8 @@ def shift(position, distance, n):
 
 
 iterations = 0
-n = 1000 # inputNumber("How many nodes? ")
-numRobots = 50 # inputNumber("How many robots? ")
+n = 100 # inputNumber("How many nodes? ")
+numRobots = 99 # inputNumber("How many robots? ")
 robots = set(random.sample(range(1, n+1), numRobots))
 print(robots)
 
@@ -42,16 +42,14 @@ while len(robots) > 1:
     moves = list()
 
     while len(robotsBefore) > 0:
-        move = random.randint(1,int(n/lenBefore)) * random.choice([-1, 1])
+        move = random.choice([-1, 1]) # * random.randint(1,int(n/lenBefore))
         moves.append(move)
         robotsAfter.add(shift(robotsBefore.pop(),move,n))
         robotsAfter.difference_update(robotsBefore)
         # print(robotsBefore, robotsAfter)
 
     if len(robotsAfter) != lenBefore:
-         print(robots)
-         print(moves)
+         print("before", robots)
+         print("move: ", moves)
          print(robotsAfter, ' : ', len(robotsAfter), ' : ', iterations)
     robots = set(robotsAfter)
-
-# print(robots, ' : ', iterations)
