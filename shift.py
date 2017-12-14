@@ -11,6 +11,15 @@ def inputNumber(message):
             return userInput
         break
 
+def yes_or_no(question):
+    reply = str(input(question + ' (y/n): ')).lower().strip()
+    if reply[0] == 'y':
+        return True
+    if reply[0] == 'n':
+        return False
+    else:
+        return yes_or_no("Uhhhh... please enter a valid input")
+
 def shift(position, distance, n):
     if (position + distance) <= 0: # (position + distance) result is negative and we 
         return (n + position + distance)
@@ -21,11 +30,11 @@ def shift(position, distance, n):
 
 
 
-def rendezvouz(nodes, numRobots):
+def rendezvouz(nodes, numRobots, bigSteps, output=False, verbose=False):
     iterations = 0
     shifts = 0
     robots = set(random.sample(range(1, nodes+1), numRobots))
-    # print(robots)
+    # print("robots: ", robots)
 
     while len(robots) > 1:
         iterations += 1
@@ -35,16 +44,24 @@ def rendezvouz(nodes, numRobots):
         moves = list()
 
         while len(robotsBefore) > 0:
-            move = random.choice([-1, 1]) * random.randint(1,int(nodes/lenBefore)) 
+            move = random.choice([-1, 1])
+            if bigSteps:
+                move = move * random.randint(1,int(nodes/lenBefore))
             moves.append(move)
             robotsAfter.add(shift(robotsBefore.pop(),move,nodes))
             shifts += 1
             robotsAfter.difference_update(robotsBefore)
 
-        # if len(robotsAfter) != lenBefore:
-            # print("before", robots)
-            # print("move: ", moves)
-            # print(robotsAfter, ' : ', len(robotsAfter), ' : ', iterations)
+        if output:
+            if verbose:
+                print("\nbefore: ", robots)
+                print("move:   ", moves)
+                print("after:  ", robotsAfter, ' : ', len(robotsAfter), ' : ', iterations)
+            elif len(robotsAfter) != lenBefore:
+                print("\nbefore: ", robots)
+                print("move:   ", moves)
+                print("after:  ", robotsAfter, ' : ', len(robotsAfter), ' : ', iterations)
+            
         robots = set(robotsAfter)
     return (iterations, shifts)
 

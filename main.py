@@ -1,18 +1,12 @@
 import shift
 
-tests = 1000
-nodes = 10 # shift.inputNumber("How many nodes? ")
-# numRobots = 10 # shift.inputNumber("How many robots? ")
-# Ask movement specifics
+nodes = shift.inputNumber("How many nodes? ")
+numRobots = shift.inputNumber("How many robots? ")
+bigSteps = shift.yes_or_no("Can the robots take bigger steps?")
+verbose = shift.yes_or_no("verbose output?")
 
-for numRobots in range(int(nodes/10),nodes+1,int(nodes/10)):
-    totalIterations = 0
-    totalShifts = 0
-    for i in range(0,tests):
-        result = shift.rendezvouz(nodes, numRobots)
-        totalIterations += result[0]
-        totalShifts += result[1]
-        # print(robots, ' : ', totalIterations)
-    avgIterations = totalIterations / tests
-    avgShifts = totalShifts / tests
-    print (numRobots, avgIterations, avgShifts)
+result = shift.rendezvouz(nodes, numRobots, bigSteps, output=True, verbose=verbose)
+iterations = result[0]
+shifts = result[1]
+
+print ("\n\n\ntotal iterations: ", iterations, "    total moves: ", shifts) 
